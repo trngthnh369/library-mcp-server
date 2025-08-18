@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# MCP_Tutorial
-=======
 # 📚 Library MCP Server
 
 A modern, extensible **Model Context Protocol (MCP) server** for managing a digital book library. This project provides a robust agentic API for book management, resource access, and prompt-based workflows, built with Python 3.11+, MCP, Starlette, Uvicorn, and Pydantic.
@@ -218,4 +215,3 @@ python server.py --transport sse --port 8000
 python client.py --transport stdio
 # Hoặc HTTP:
 python client.py --transport http --server-url 
->>>>>>> 800df09 (Upload project)
