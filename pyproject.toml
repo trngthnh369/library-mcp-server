@@ -5,9 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "anyio>=4.10.0",
     "click>=8.2.1",
-    "mcp-streamablehttp-client>=0.2.0",
-    "mcp[cli]>=1.13.0",
+    "httpx>=0.28.1",
+    "mcp>=1.13.0",
     "pydantic>=2.11.7",
     "starlette>=0.47.2",
     "uvicorn>=0.35.0",
