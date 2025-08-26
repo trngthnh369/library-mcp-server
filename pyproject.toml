@@ -4,12 +4,27 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
+
 dependencies = [
-    "anyio>=4.10.0",
-    "click>=8.2.1",
-    "httpx>=0.28.1",
-    "mcp>=1.13.0",
-    "pydantic>=2.11.7",
-    "starlette>=0.47.2",
-    "uvicorn>=0.35.0",
+  "anyio>=4.10.0",
+  "click>=8.2.1",
+  "httpx>=0.28.1",
+  "mcp>=1.13.0",
+  "pydantic>=2.11.7",
+  "starlette>=0.47.2",
+  "uvicorn>=0.35.0",
 ]
+
+[project.urls]
+Repository = "https://github.com/trngthnh369/library-mcp-server.git"
+Source = "https://github.com/trngthnh369/library-mcp-server.git"
+
+
+[tool.setuptools]
+# nếu bạn có package data muốn include
+include-package-data = true
+
+# Cấu hình tìm packages (tương đương setuptools.find_packages())
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "docs*"]
