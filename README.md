@@ -1,307 +1,351 @@
-# Library Management MCP Server
+# 📚 MCP Library Management Server
 
-A comprehensive Model Context Protocol (MCP) server for managing a book library with tools, resources, and prompts.
+> A powerful Model Context Protocol (MCP) server for managing personal book libraries with advanced features like search, recommendations, and analytics.
 
-## 🚀 Features
+[![MCP](https://img.shields.io/badge/MCP-Compatible-blue.svg)](https://modelcontextprotocol.io/)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-green.svg)](https://python.org)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-### Core Functionality
-- **📚 Book Management**: Add, remove, and organize books with metadata
-- **🔍 Advanced Search**: Search by title, author, tags with flexible filtering
-- **📊 Statistics**: Library analytics and insights
-- **💾 Persistent Storage**: JSON-based storage with backup functionality
-- **🚀 Performance**: Built-in caching for improved response times
+## 🌟 Features
 
-### MCP Capabilities
-- **🛠️ Tools**: Interactive book operations
-- **📋 Resources**: Static and dynamic resource access
-- **💬 Prompts**: AI-ready prompts for book recommendations and analysis
-- **🔗 Multiple Transports**: Support for stdio and Server-Sent Events (SSE)
+### 📖 **Core Library Management**
+- ✅ Add, update, and remove books with rich metadata
+- 🔍 Advanced search by title, author, genre, or tags
+- 📊 Comprehensive library analytics and statistics
+- 🎯 AI-powered book recommendations
+- 🏷️ Smart tagging and categorization system
 
-## 📋 Requirements
+### 🚀 **Capabilities** 
+- 📈 **Analytics Dashboard**: Statistics by genre, author, rating, language
+- 🔮 **Smart Recommendations**: Based on reading preferences and similarity
+- 🔍 **Flexible Search**: Multi-criteria search with result limiting
+- 📝 **Rich Metadata**: ISBN validation, ratings, descriptions, page counts
+- 🌐 **Multiple Transports**: HTTP, STDIO, and SSE support
+- 💾 **Data Safety**: Auto-backup and error recovery
 
-- Python 3.11 or higher
-- Dependencies listed in `pyproject.toml`
-
-## 🛠️ Installation
-
-1. **Clone the repository**:
-```bash
-git clone https://github.com/trngthnh369/library-mcp-server.git
-cd library-mcp-server
-```
-
-2. **Create virtual environment**:
-```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
-3. **Install dependencies**:
-```bash
-pip install -e .
-```
+### 🛠️ **Developer Features**
+- 🧪 Interactive testing suite with demo mode
+- 🔧 Comprehensive error handling and logging
+- 📋 Full MCP protocol compliance
+- 🔄 Backward compatibility with existing data
+- 🌍 Unicode and multi-language support
 
 ## 🚀 Quick Start
 
-### Start the Server
+### Prerequisites
 
-#### Using stdio transport (default):
+- Python 3.8+
+- pip or uv package manager
+
+### Installation
+
 ```bash
+# Clone the repository
+git clone https://github.com/trngthnh369/library-mcp-server.git
+cd library-mcp-server
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or
+venv\Scripts\activate     # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Running the Server
+
+```bash
+# HTTP Transport (Recommended)
+python server.py --transport http --port 8000
+
+# STDIO Transport
 python server.py --transport stdio
+
+# Custom configuration
+python server.py --books-file my_library.json --log-level DEBUG
 ```
 
-#### Using SSE transport:
+### Testing
+
 ```bash
-python server.py --transport sse --port 8000 --host 127.0.0.1
+# Run comprehensive tests
+python client.py --transport http --port 8000
+
+# Interactive demo mode
+python client.py --transport http --test-only=false
 ```
 
-### Run the Client
+## 📋 API Reference
 
-#### Run comprehensive tests:
-```bash
-python client.py --transport stdio
-```
+### 🔧 Tools
 
-#### Interactive mode:
-```bash
-python client.py --transport stdio --interactive
-```
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `add_book` | Add a new book to library | title, author, isbn, tags, genre, rating, etc. |
+| `update_book` | Update existing book info | isbn, fields to update |
+| `remove_book` | Remove book by ISBN | isbn |
+| `search_books` | Advanced book search | query, search_type, limit |
+| `get_statistics` | Library analytics | group_by (genre/author/rating/language) |
+| `get_recommendations` | Smart book suggestions | preferences, min_rating, based_on_isbn |
+| `get_num_books` | Get total book count | none |
 
-#### SSE transport:
-```bash
-python client.py --transport sse --server-url http://127.0.0.1:8000/messages --interactive
-```
+### 📚 Resources
+
+| Resource | URI | Description |
+|----------|-----|-------------|
+| All Books | `books://all` | Complete library with metadata |
+| Statistics | `books://stats` | Real-time library analytics |
+| Book by ISBN | `books://isbn/{isbn}` | Individual book details |
+
+### 💬 Prompts
+
+| Prompt | Description | Arguments |
+|--------|-------------|-----------|
+| `suggest_random_book` | Random book suggestion | none |
+| `suggest_book_title_by_abstract` | Title suggestion from abstract | abstract |
+| `analyze_book` | Detailed book analysis | book, query |
+| `library_recommendations` | Personalized recommendations | preferences |
+| `library_analysis` | Complete library insights | none |
 
 ## 📖 Usage Examples
 
-### Server Configuration
+### Adding a Book
 
-The server can be configured through environment variables:
-
-```bash
-export LIBRARY_BOOKS_FILE="my_books.json"
-export LIBRARY_MAX_BOOKS="5000"
-export LIBRARY_CACHE_ENABLED="true"
-export LIBRARY_LOG_LEVEL="DEBUG"
-```
-
-### Available Tools
-
-1. **add_book**: Add a new book to the library
-2. **remove_book**: Remove a book by ISBN
-3. **get_book_count**: Get total number of books
-4. **search_books**: Search books with filters (if enabled)
-5. **get_library_stats**: Get library statistics (if enabled)
-
-### Book Data Structure
-
-```json
-{
-  "title": "The Great Adventure",
-  "author": "Alice Johnson",
-  "isbn": "9781234567890",
-  "tags": ["fiction", "adventure", "mystery"]
+```python
+# Full metadata example
+book_data = {
+    "title": "The Quantum Universe",
+    "author": "Brian Cox",
+    "isbn": "9780241952702",
+    "tags": ["physics", "science", "quantum mechanics"],
+    "genre": "Science",
+    "year_published": 2011,
+    "rating": 4.2,
+    "description": "An exploration of quantum mechanics and reality",
+    "pages": 352,
+    "language": "English"
 }
+
+response = await session.call_tool("add_book", book_data)
+print(response.content[0].text)
+# Output: Book 'The Quantum Universe' by Brian Cox successfully added to the library.
 ```
 
-### Resource Access
+### Advanced Search
 
-- **All books**: `books://all`
-- **Book by index**: `books://index/{index}`
-- **Book by ISBN**: `books://isbn/{isbn}`
-- **Search results**: `books://search?q={query}&author={author}&tag={tag}`
-- **Statistics**: `books://stats`
+```python
+# Search by genre
+search_response = await session.call_tool("search_books", {
+    "query": "Science Fiction",
+    "search_type": "genre",
+    "limit": 5
+})
 
-### Available Prompts
+# Universal search
+search_response = await session.call_tool("search_books", {
+    "query": "quantum physics",
+    "search_type": "all",
+    "limit": 10
+})
+```
 
-1. **suggest_random_book**: Get a random book suggestion
-2. **suggest_book_title_by_abstract**: Generate book titles from abstracts
-3. **analyze_book**: Analyze a book with custom queries
-4. **recommend_books**: Get personalized book recommendations
+### Getting Recommendations
+
+```python
+# Preference-based recommendations
+rec_response = await session.call_tool("get_recommendations", {
+    "preferred_genres": ["Science", "History"],
+    "min_rating": 4.0
+})
+
+# Similar book recommendations  
+rec_response = await session.call_tool("get_recommendations", {
+    "based_on_isbn": "9780241952702"
+})
+```
+
+### Library Analytics
+
+```python
+# Genre statistics
+stats_response = await session.call_tool("get_statistics", {
+    "group_by": "genre"
+})
+
+result = json.loads(stats_response.content[0].text)
+print(f"Total books: {result['total_books']}")
+print(f"Average rating: {result['summary']['average_rating']:.2f}")
+```
+
+## 🏗️ Architecture
+
+```
+library-mcp-server
+├──server.py      # Main MCP server
+├──client.py # Comprehensive test suiteutilities
+├──requirements.txt # Dependencies
+├──pyproject.toml 
+├──README.md
+└──uv.lock
+```
 
 ## 🔧 Configuration
 
-### Server Configuration (config.py)
+### Server Options
 
-```python
-from config import get_config, update_config
+```bash
+python server.py --help
 
-# Get current configuration
-config = get_config()
-
-# Update configuration
-update_config(
-    max_books=5000,
-    cache_enabled=True,
-    enable_search=True
-)
+Options:
+  --log-level [DEBUG|INFO|WARNING|ERROR]  Set logging level (default: INFO)
+  --transport [http|stdio|sse]            Transport type (default: http) 
+  --port INTEGER                          HTTP server port (default: 8000)
+  --books-file TEXT                       JSON data file (default: books.json)
 ```
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `LIBRARY_BOOKS_FILE` | `books.json` | Path to books storage file |
-| `LIBRARY_HOST` | `127.0.0.1` | Server host |
-| `LIBRARY_PORT` | `8000` | Server port |
-| `LIBRARY_LOG_LEVEL` | `INFO` | Logging level |
-| `LIBRARY_MAX_BOOKS` | `10000` | Maximum books limit |
-| `LIBRARY_CACHE_ENABLED` | `true` | Enable caching |
-| `LIBRARY_CACHE_TTL` | `300` | Cache TTL in seconds |
-
-## 🏗️ Architecture
-
-### Project Structure
-
-```
-library-mcp-server/
-├── server.py          # Main MCP server
-├── client.py          # Test client
-├── models.py          # Data models and validation
-├── config.py          # Configuration management
-├── pyproject.toml     # Project configuration
-├── .gitignore         # Git ignore rules
-└── README.md          # Documentation
+```bash
+# Optional environment configuration
+export MCP_LOG_LEVEL=DEBUG
+export MCP_TRANSPORT=http
+export MCP_PORT=8000
+export MCP_BOOKS_FILE=my_library.json
 ```
 
-### Key Components
+## 🧪 Testing & Development
 
-1. **LibraryManagement**: Core business logic
-2. **LibraryCache**: In-memory caching system
-3. **Book Models**: Pydantic models with validation
-4. **ServerConfig**: Configuration management
-5. **LibraryMCPClient**: Enhanced test client
-
-## 📊 Performance Features
-
-### Caching System
-- In-memory caching with TTL support
-- Automatic cache invalidation on data changes
-- Configurable cache settings
-
-### Error Handling
-- Comprehensive error responses
-- Structured error logging
-- Graceful failure recovery
-
-### Validation
-- Strong input validation using Pydantic
-- ISBN format validation
-- Data sanitization and cleaning
-
-## 🧪 Testing
-
-### Automated Test Suite
+### Running Tests
 
 ```bash
-# Run comprehensive tests
-python client.py --test-only
+# Full test suite
+python client.py --transport http
 
-# Test specific transport
-python client.py --transport sse --server-url http://127.0.0.1:8000/messages --test-only
-```
+# Specific transport testing
+python client.py --transport stdio
+python client.py --transport http --port 8000
 
-### Interactive Testing
+### Interactive Demo
 
-```bash
-# Start interactive mode
-python client.py --interactive
-
-# Available commands in interactive mode:
-# - show: Display server capabilities
-# - add: Add a new book
-# - list: List all books
-# - search: Search books
-# - stats: Show statistics
-# - random: Random book suggestion
-# - count: Get book count
-# - exit: Quit
-```
-
-### Manual Testing with curl (SSE)
+The test client includes an interactive demo mode:
 
 ```bash
-# Start server
-python server.py --transport sse --port 8000
-
-# Test with curl
-curl -X POST http://127.0.0.1:8000/messages \
-  -H "Content-Type: application/json" \
-  -d '{"method": "tools/list"}'
+python client.py --test-only=false
 ```
 
-## 🔍 Troubleshooting
+Demo features:
+- 🎮 Add random books
+- 🔍 Interactive search
+- 🎯 Get recommendations  
+- 📊 View statistics
+- 📚 Browse all books
+
+### Sample Data
+
+The test suite includes realistic sample books:
+- "The Quantum Universe" by Brian Cox
+- "Sapiens" by Yuval Noah Harari  
+- "Dune" by Frank Herbert
+- "The Art of War" by Sun Tzu
+
+## 🛠️ Troubleshooting
 
 ### Common Issues
 
-1. **Import Errors**: Make sure all dependencies are installed
-2. **File Permissions**: Ensure write permissions for books.json
-3. **Port Conflicts**: Change port if 8000 is in use
-4. **Python Version**: Requires Python 3.11+
+#### STDIO Transport Errors
+```bash
+
+# Alternative: Use HTTP transport
+python server.py --transport http --port 8000
+python client.py --transport http
+```
+
+#### Import Errors
+```bash
+# Check dependencies
+pip install -r requirements.txt
+
+# Verify MCP installation
+python -c "import mcp; print('MCP OK')"
+```
+
+#### Data File Issues
+```bash
+# Reset library (backup created automatically)
+rm books.json
+
+# Restore from backup
+cp books.backup.json books.json
+```
 
 ### Debug Mode
 
+Enable detailed logging:
 ```bash
-python server.py --log-level DEBUG --transport stdio
+python server.py --log-level DEBUG --transport http
 ```
 
-### Logs Location
-Logs are printed to stdout/stderr. For persistent logging, redirect output:
+### Performance Tips
 
-```bash
-python server.py 2>&1 | tee library-server.log
-```
+- Use HTTP transport for better reliability
+- Limit search results for large libraries
+- Enable compression for large datasets
+- Use SSD storage for better I/O performance
 
-## 📝 API Reference
+## 📊 Performance & Limits
 
-### Tools
+| Metric | Recommended | Maximum |
+|--------|------------|---------|
+| Books in library | < 10,000 | ~50,000 |
+| Search results | < 100 | 1,000 |
+| Concurrent connections | < 50 | 100 |
+| File size | < 50MB | 200MB |
 
-#### add_book
-Adds a new book to the library.
+## 🔒 Security Features
 
-**Parameters:**
-- `title` (string, required): Book title
-- `author` (string, required): Book author  
-- `isbn` (string, required): Book ISBN
-- `tags` (array, optional): Book tags
-
-#### remove_book
-Removes a book by ISBN.
-
-**Parameters:**
-- `isbn` (string, required): Book ISBN
-
-#### search_books
-Searches books with filters.
-
-**Parameters:**
-- `query` (string, optional): Search text
-- `author` (string, optional): Author filter
-- `tag` (string, optional): Tag filter
-- `limit` (integer, optional): Result limit (default: 10)
-
-### Resources
-
-- `books://all` - All books
-- `books://index/{index}` - Book by index
-- `books://isbn/{isbn}` - Book by ISBN
-- `books://stats` - Library statistics
-- `books://search?...` - Search results
+- ✅ Input validation and sanitization
+- ✅ ISBN format validation
+- ✅ Safe file operations
+- ✅ Error message sanitization
+- ✅ No sensitive data exposure
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 License
+### Development Setup
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run linting
+flake8 server.py client.py
+
+# Run type checking
+mypy server.py
+
+# Format code
+black server.py client.py
+```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Built with [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol/python-sdk)
-- Uses [Pydantic](https://pydantic-docs.helpmanual.io/) for data validation
-- Powered by [FastAPI](https://fastapi.tiangolo.com/) ecosystem
+- [Model Context Protocol](https://modelcontextprotocol.io/) team
+- [Anthropic](https://anthropic.com/) for MCP development
+- Python community for excellent libraries
+- Contributors and testers
+
+## 📞 Support
+
+- Email: truongthinhnguyen30303@gmail.com

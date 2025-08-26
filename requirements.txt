@@ -1,0 +1,7 @@
+  anyio>=4.10.0
+  click>=8.2.1
+  httpx>=0.28.1
+  mcp>=1.13.0
+  pydantic>=2.11.7
+  starlette>=0.47.2
+  uvicorn>=0.35.0

@@ -1,9 +1,9 @@
 [project]
 name = "library-mcp-server"
 version = "0.1.0"
-description = "Add your description here"
+description = "A powerful Model Context Protocol (MCP) server for managing personal book libraries with advanced features like search, recommendations, and analytics."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.8"
 
 dependencies = [
   "anyio>=4.10.0",
@@ -21,10 +21,8 @@ Source = "https://github.com/trngthnh369/library-mcp-server.git"
 
 
 [tool.setuptools]
-# nếu bạn có package data muốn include
 include-package-data = true
 
-# Cấu hình tìm packages (tương đương setuptools.find_packages())
 [tool.setuptools.packages.find]
 where = ["."]
 exclude = ["tests*", "docs*"]
